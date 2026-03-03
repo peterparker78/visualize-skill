@@ -1,11 +1,91 @@
 # Diagram Pattern Library
 
 ## Table of Contents
+- [Visual Patterns](#visual-patterns)
 - [Flowchart Patterns](#flowchart-patterns)
 - [Mind Map Patterns](#mind-map-patterns)
 - [Learning Diagrams](#learning-diagrams)
 - [Layout Rules](#layout-rules)
 - [Complete Example](#complete-example)
+
+## Visual Patterns
+
+Compositional patterns to choose from. **Ensure variety** — no two major concepts in the same diagram should use the same pattern.
+
+### Fan-Out
+One source radiating to many targets. Use for hubs, event emitters, one-to-many relationships.
+```
+                --> [Target A]
+[Source] -----> --> [Target B]
+                --> [Target C]
+```
+
+### Convergence
+Many inputs merging into one. Use for aggregation, funnels, synthesis.
+```
+[Input A] --\
+[Input B] ----> [Result]
+[Input C] --/
+```
+
+### Assembly Line
+Linear transform chain. Use for pipelines, data processing, build steps.
+```
+[Raw] --> (Parse) --> [Structured] --> (Validate) --> [Clean] --> (Store) --> [DB]
+```
+Use different shapes for data (rectangles) vs transforms (ellipses/diamonds).
+
+### Tree
+Hierarchical branching using `line` elements + free-floating text (no boxes on leaves).
+```
+         Root
+        / | \
+      A   B   C
+     / \
+    A1  A2
+```
+Best for taxonomies, file systems, org charts. Use `line` type as scaffolding, NOT arrows.
+
+### Spiral / Cycle
+Sequence with return arrow. Use for feedback loops, iteration, continuous processes.
+```
+[Plan] --> [Do] --> [Check] --> [Act]
+  ^                               |
+  +-------------------------------+
+```
+
+### Cloud
+Overlapping ellipses forming an amorphous group. Use for abstract concepts, state, context.
+```
+  (Memory)
+(Context)(State)
+  (Cache)
+```
+
+### Side-by-Side
+Two parallel structures. Use for before/after, comparisons, tradeoffs.
+```
+[Before]          [After]
+  |                  |
+[Step 1]          [Step 1]
+  |                  |
+[Step 2]          [Step 2]
+```
+Place a "VS" or divider line between the two groups.
+
+### Gap / Break
+Visual whitespace or barrier between sections. Use for phase transitions, context resets.
+```
+[Phase 1] --> [Step] --> [Step]    |||    [Phase 2] --> [Step] --> [Step]
+```
+
+### Lines as Structure
+Use `line` type (not arrows) as primary scaffolding — timelines, tree branches, dividers, grouping borders.
+```
+─────────────────────────────────
+  2024    │    2025    │    2026
+─────────────────────────────────
+```
 
 ## Flowchart Patterns
 
@@ -39,7 +119,6 @@
 | Rectangle | Process/Action | rectangle |
 | Diamond | Decision/Branch | diamond |
 | Ellipse | Event/Trigger/Output | ellipse |
-| Parallelogram | Input/Output (use diamond rotated) | diamond |
 
 ## Mind Map Patterns
 
@@ -54,10 +133,11 @@ Central topic in the middle, branches radiate outward:
 ```
 
 **Layout algorithm:**
-1. Place central node at (400, 300) with larger size (200x80)
-2. Calculate N branch positions evenly around a circle (radius 250-350px)
-3. For each branch, place sub-branches further out (radius +200px)
-4. Connect with curved arrows or lines
+1. Place central node at (500, 380) with hero size (200x100)
+2. Calculate N branch positions evenly around a circle (radius 300-400px)
+3. For each branch, place sub-branches further out (radius +200px) on the OPPOSITE side from center
+4. Connect center→branch with colored lines (not arrows), branch→leaf with thinner lines
+5. Leaves must NOT sit between their parent and the center
 
 ### Hierarchical Mind Map
 ```
@@ -77,15 +157,7 @@ Central topic in the middle, branches radiate outward:
 4. Connect parent to children with lines
 
 ### Color-Coding Branches
-Assign each primary branch a distinct color family:
-- Branch 1: Blue family (#4a9eed stroke, #a5d8ff fill)
-- Branch 2: Green family (#22c55e stroke, #b2f2bb fill)
-- Branch 3: Amber family (#f59e0b stroke, #ffd8a8 fill)
-- Branch 4: Purple family (#8b5cf6 stroke, #d0bfff fill)
-- Branch 5: Red family (#ef4444 stroke, #ffc9c9 fill)
-- Branch 6: Teal family (#06b6d4 stroke, #c3fae8 fill)
-
-Sub-nodes inherit their parent branch color.
+See [references/color-palette.md](color-palette.md) for the branch color assignment order. Sub-nodes inherit their parent branch color.
 
 ## Learning Diagrams
 
@@ -94,25 +166,22 @@ Sub-nodes inherit their parent branch color.
 [Concept A]          VS          [Concept B]
 - Feature 1                      - Feature 1
 - Feature 2                      - Feature 2
-- Feature 3                      - Feature 3
 ```
-Place two groups side by side with a "VS" text element between them.
+Place two groups side by side with a "VS" text element between them. Use Side-by-Side pattern.
 
 ### Process Explanation
-Show a concept's mechanism step by step:
 ```
 [Input] -> (Transform) -> [Intermediate] -> (Transform) -> [Output]
 ```
-Use different shapes for different roles in the process.
+Use Assembly Line pattern. Different shapes for different roles.
 
 ### Hierarchy/Taxonomy
 ```
          [Parent Concept]
         /        |        \
 [Type A]    [Type B]    [Type C]
-   |            |
-[Sub-A1]   [Sub-B1]
 ```
+Use Tree pattern with lines, prefer free-floating text for leaves.
 
 ### Cause-Effect Chain
 ```
@@ -126,7 +195,7 @@ Use different shapes for different roles in the process.
 [Step 1] --> [Step 2] --> [Step 3] --> [Step 4]
   2024        2025         2026         2027
 ```
-Horizontal layout with time annotations below.
+Use Lines as Structure pattern for the timeline rail.
 
 ### Cycle Diagram
 ```
@@ -135,6 +204,7 @@ Horizontal layout with time annotations below.
     |              v
 [Stage 4] <-- [Stage 3]
 ```
+Use Spiral/Cycle pattern.
 
 ## Layout Rules
 
@@ -143,6 +213,7 @@ Horizontal layout with time annotations below.
 - Minimum 50px between shapes vertically
 - Arrow gap from shapes: 5-8px
 - Canvas padding: 40px on all sides
+- Hero nodes get 200px+ empty space around them
 
 ### Alignment
 - Align related shapes on the same Y coordinate for horizontal flows
@@ -150,11 +221,15 @@ Horizontal layout with time annotations below.
 - Center text labels below or inside shapes
 
 ### Sizing
-- Standard shape: 140x60px (rectangle), 80x80px (diamond/ellipse)
-- Title text: fontSize 28-32
-- Label text: fontSize 16-20
-- Annotation text: fontSize 14-16
-- Central/important nodes: 1.5x standard size
+| Level | Width | Height | Use |
+|-------|-------|--------|-----|
+| Hero | 200-300 | 80-150 | Central node, main subject |
+| Primary | 140-180 | 60-90 | Major branches, key steps |
+| Secondary | 100-140 | 40-60 | Sub-items, leaves |
+| Small | 60-100 | 30-40 | Markers, annotations |
+| Title text | fontSize 28-32 | | |
+| Label text | fontSize 16-20 | | |
+| Annotation text | fontSize 12-16 | | |
 
 ### Dark Theme Defaults
 - Background: `#1e1e2e` (deep navy)
